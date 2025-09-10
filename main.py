@@ -2,6 +2,11 @@ import discord
 import os
 from dotenv import load_dotenv
 from discord import app_commands
+from enum import Enum
+import json
+
+with open("due_dates.json", "r") as file:
+    due_dates = json.load(file)
 
 load_dotenv()
 
@@ -39,11 +44,49 @@ async def hello(interaction: discord.Interaction):
 @app_commands.describe(
     message='The message to repeat',
 )
-async def repeat(interactions: discord.Interaction, message: str):
+async def repeat(interaction: discord.Interaction, message: str):
     """"repeats a message."""
-    await interactions.response.send_message(message)
+    await interaction.response.send_message(message)
 
 
+class Class(Enum):
+    all = "all"
+    cdir = "cdir"
+    tech = "tech essentials"
+    citw = "Communications in the Workplace"
+    software = "Software development fundementals"
+
+@client.tree.command()
+@app_commands.describe(
+        course="The class you want to check"
+)
+async def due(interaction: discord.Interaction, course: Class):
+    """Says what's due for the current week."""
+
+    if course == Class.all:
+        message = []
+        for subject, assignments in due_dates.items():
+            message.append(f"\n __{subject}__")
+            for assignment in assignments:
+                message.append(f" - {assignment}")
+        await interaction.response.send_message("\n".join(message), ephemeral=True)
+                    
+    else:
+        key_map = {
+             Class.cdir: "CDIR",
+            Class.tech: "Tech Essentials",
+            Class.citw: "Communication in the Workplace",
+            Class.software: "Software Development Fundamentals"
+        }
+
+        subject = key_map[course]
+        tasks = due_dates.get(subject, [])
+
+        message = [f"\n__{subject}__"]
+        for task in tasks:
+            message.append(f"  - {task}")
+
+        await interaction.response.send_message("\n".join(message), ephemeral=True)
 
 
 
