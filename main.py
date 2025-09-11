@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from discord import app_commands
 from enum import Enum
 import json
+import random
 
 with open("due_dates.json", "r") as file:
     due_dates = json.load(file)
@@ -47,6 +48,25 @@ async def hello(interaction: discord.Interaction):
 async def repeat(interaction: discord.Interaction, message: str):
     """"repeats a message."""
     await interaction.response.send_message(message)
+
+
+@client.tree.command()
+@app_commands.describe(
+    sides="The number of sides on the dice"
+)
+async def dice(interaction: discord.Interaction, sides: int):
+    """""rolls a dice."""
+    if sides < 1:
+        await interaction.response.send_message("The number of sides must be at least 1.", ephemeral=True)
+        return
+    else:
+        await interaction.response.send_message(f'{interaction.user.mention} roles a {sides}-sided dice...')
+        roll = random.randint(1, sides)
+        await interaction.followup.send(f'{interaction.user} rolled a {roll}')
+
+
+
+
 
 
 class Class(Enum):
