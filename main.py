@@ -9,6 +9,9 @@ import random
 with open("due_dates.json", "r") as file:
     due_dates = json.load(file)
 
+with open("important_dates.json", "r") as file:
+    important_dates = json.load(file)
+
 load_dotenv()
 
 API_KEY = os.getenv("KEY")
@@ -66,6 +69,42 @@ async def dice(interaction: discord.Interaction, sides: int):
 
 
 
+class Months(Enum):
+    january = "January"
+    july = "July"
+    august = "August"
+    september = "September"
+    october = "October"
+    november = "November"
+    december = "December"
+
+
+@client.tree.command()
+@app_commands.describe(
+    month="The month you want details for"
+)
+async def important_date(interactions: discord.Interaction, month: Months):
+    """Says important information about a month."""
+    month_map = {
+        Months.january: "January",
+        Months.july: "July",
+        Months.august: "August",
+        Months.september: "September",
+        Months.october: "October",
+        Months.november: "November",
+        Months.december: "December"
+    }
+
+    dates = month_map[month]
+    days = important_dates.get(dates, [])
+
+    datel = [f"\n__{dates}__"]
+    for date in days:
+        datel.append(f"  - {date}")
+
+    await interactions.response.send_message("\n".join(datel), ephemeral=True)
+
+
 
 
 
@@ -80,7 +119,7 @@ class Class(Enum):
 @app_commands.describe(
         course="The class you want to check"
 )
-async def due(interaction: discord.Interaction, course: Class):
+async def due(interactions: discord.Interaction, course: Class):
     """Says what's due for the current week."""
 
     if course == Class.all:
@@ -89,11 +128,11 @@ async def due(interaction: discord.Interaction, course: Class):
             message.append(f"\n __{subject}__")
             for assignment in assignments:
                 message.append(f" - {assignment}")
-        await interaction.response.send_message("\n".join(message), ephemeral=True)
+        await interactions.response.send_message("\n".join(message), ephemeral=True)
                     
     else:
         key_map = {
-             Class.cdir: "CDIR",
+            Class.cdir: "CDIR",
             Class.tech: "Tech Essentials",
             Class.citw: "Communication in the Workplace",
             Class.software: "Software Development Fundamentals"
@@ -106,7 +145,7 @@ async def due(interaction: discord.Interaction, course: Class):
         for task in tasks:
             message.append(f"  - {task}")
 
-        await interaction.response.send_message("\n".join(message), ephemeral=True)
+        await interactions.response.send_message("\n".join(message), ephemeral=True)
 
 
 
