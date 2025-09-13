@@ -39,11 +39,14 @@ client = MyClient(intents=intents)
 async def on_ready():
     print(f'We have logged in as {client.user}')
 
+
+# simple hello command
 @client.tree.command()
 async def hello(interaction: discord.Interaction):
     """Says hello!"""
     await interaction.response.send_message(f'Hi, {interaction.user.mention}')
 
+# Simple repeat command
 @client.tree.command()
 @app_commands.describe(
     message='The message to repeat',
@@ -52,7 +55,7 @@ async def repeat(interaction: discord.Interaction, message: str):
     """"repeats a message."""
     await interaction.response.send_message(message)
 
-
+# Simple Dice Roll command
 @client.tree.command()
 @app_commands.describe(
     sides="The number of sides on the dice"
@@ -78,7 +81,7 @@ class Months(Enum):
     november = "November"
     december = "December"
 
-
+# Important_dates command
 @client.tree.command()
 @app_commands.describe(
     month="The month you want details for"
@@ -115,6 +118,7 @@ class Class(Enum):
     citw = "Communications in the Workplace"
     software = "Software development fundementals"
 
+# Due command
 @client.tree.command()
 @app_commands.describe(
         course="The class you want to check"
