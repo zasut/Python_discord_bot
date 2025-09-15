@@ -15,9 +15,10 @@ with open("important_dates.json", "r") as file:
 load_dotenv()
 
 API_KEY = os.getenv("KEY")
-Admin_ID = int(os.getenv("ID"))
+Admin_ID = os.getenv("ID")
+Guild_ID = os.getenv("Guild_ID")
 
-MY_GUILD = discord.Object(id=1407756705068224622)
+MY_GUILD = discord.Object(id=Guild_ID)
 
 
 class MyClient(discord.Client):
