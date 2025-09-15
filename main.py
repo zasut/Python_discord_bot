@@ -15,6 +15,7 @@ with open("important_dates.json", "r") as file:
 load_dotenv()
 
 API_KEY = os.getenv("KEY")
+Admin_ID = int(os.getenv("ID"))
 
 MY_GUILD = discord.Object(id=1407756705068224622)
 
@@ -129,7 +130,7 @@ async def due(interactions: discord.Interaction, course: Class):
     if course == Class.all:
         message = []
         for subject, assignments in due_dates.items():
-            message.append(f"\n __{subject}__")
+            message.append(f"\n **__{subject}__**")
             for assignment in assignments:
                 message.append(f" - {assignment}")
         await interactions.response.send_message("\n".join(message), ephemeral=True)
@@ -145,9 +146,11 @@ async def due(interactions: discord.Interaction, course: Class):
         subject = key_map[course]
         tasks = due_dates.get(subject, [])
 
-        message = [f"\n__{subject}__"]
+        message = [f"\n**__{subject}__**"]
         for task in tasks:
             message.append(f"  - {task}")
+        for update in due_dates["Last Updated"]:
+            message.append(f"\n**__Last Updated:__** \n__{update}__")
 
         await interactions.response.send_message("\n".join(message), ephemeral=True)
 
