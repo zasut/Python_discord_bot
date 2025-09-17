@@ -54,7 +54,7 @@ async def hello(interaction: discord.Interaction):
     message='The message to repeat',
 )
 async def repeat(interaction: discord.Interaction, message: str):
-    """"repeats a message."""
+    """repeats a message."""
     await interaction.response.send_message(message)
 
 # Simple Dice Roll command
@@ -63,7 +63,7 @@ async def repeat(interaction: discord.Interaction, message: str):
     sides="The number of sides on the dice"
 )
 async def dice(interaction: discord.Interaction, sides: int):
-    """""rolls a dice."""
+    """rolls a dice."""
     if sides < 1:
         await interaction.response.send_message("The number of sides must be at least 1.", ephemeral=True)
         return
@@ -110,7 +110,10 @@ async def important_date(interactions: discord.Interaction, month: Months):
     await interactions.response.send_message("\n".join(datel), ephemeral=True)
 
 
-
+@client.tree.command()
+async def data(interactions: discord.Interaction):
+    """"Sends the data roadmap image."""
+    await interactions.response.send_message(os.getenv("DATA_IMAGE"), ephemeral=True)
 
 
 class Class(Enum):
