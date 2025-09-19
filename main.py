@@ -45,11 +45,11 @@ async def on_ready():
     print(f'We have logged in as {client.user}')
 
 
-# simple hello command
+# simple command to reply back to the user
 @client.tree.command()
-async def hello(interaction: discord.Interaction):
-    """Says hello!"""
-    await interaction.response.send_message(f'Hi, {interaction.user.mention}')
+async def ping(interaction: discord.Interaction):
+    """reply with Pong!!"""
+    await interaction.response.send_message(f'Pong! {interaction.user.mention}', ephemeral=True)
 
 # Simple repeat command
 @client.tree.command()
@@ -121,7 +121,7 @@ async def data(interactions: discord.Interaction):
 # Help command
 
 class Commands(Enum):
-    hello = "hello"
+    ping = "ping"
     repeat = "repeat"
     important_date = "important_date"
     dice = "dice"
@@ -138,7 +138,7 @@ async def help(interactions: discord.Interaction, command: Commands):
 
 
     commands_map = {
-        Commands.hello: "hello",
+        Commands.ping: "ping",
         Commands.repeat: "repeat",
         Commands.important_date: "important_date",
         Commands.dice: "dice",
