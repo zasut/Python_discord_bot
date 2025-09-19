@@ -12,6 +12,9 @@ with open("due_dates.json", "r") as file:
 with open("important_dates.json", "r") as file:
     important_dates = json.load(file)
 
+with open ("commands.json", "r") as file:
+    commands_info = json.load(file)
+
 load_dotenv()
 
 API_KEY = os.getenv("KEY")
@@ -114,6 +117,44 @@ async def important_date(interactions: discord.Interaction, month: Months):
 async def data(interactions: discord.Interaction):
     """"Sends the data roadmap image."""
     await interactions.response.send_message(os.getenv("DATA_IMAGE"), ephemeral=True)
+
+# Help command
+
+class Commands(Enum):
+    hello = "hello"
+    repeat = "repeat"
+    important_date = "important_date"
+    dice = "dice"
+    data = "data"
+    due = "due"
+
+
+@client.tree.command()
+@app_commands.describe(
+    command='the command you need help with'
+)
+async def help(interactions: discord.Interaction, command: Commands):
+    """provides information on the selected command."""
+
+
+    commands_map = {
+        Commands.hello: "hello",
+        Commands.repeat: "repeat",
+        Commands.important_date: "important_date",
+        Commands.dice: "dice",
+        Commands.data: "data",
+        Commands.due: "due",
+    }
+
+    command_name = commands_map[command]
+    info = commands_info.get(command_name, [])
+
+    command_info = [f"\n__{command_name}__"]
+    for command_infos in info:
+        command_info.append(f"  - {command_infos}")
+
+    await interactions.response.send_message("\n".join(command_info), ephemeral=True)  
+
 
 
 class Class(Enum):
