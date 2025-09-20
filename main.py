@@ -157,47 +157,45 @@ async def help(interactions: discord.Interaction, command: Commands):
 
 
 
-class Class(Enum):
-    all = "all"
-    cdir = "cdir"
-    tech = "tech essentials"
-    citw = "Communications in the Workplace"
-    software = "Software development fundementals"
+# class Class(Enum):
+    # all = "all"
+    # cdir = "CDIR"
+    # data = "Data Academy"
+    # citw = "Communications in the Workplace"
 
 # Due command
 @client.tree.command()
-@app_commands.describe(
-        course="The class you want to check"
-)
-async def due(interactions: discord.Interaction, course: Class):
+# @app_commands.describe(
+#        course="The class you want to check"
+# )
+async def due(interactions: discord.Interaction):
     """Says what's due for the current week."""
 
-    if course == Class.all:
-        message = []
-        for subject, assignments in due_dates.items():
-            message.append(f"\n **__{subject}__**")
-            for assignment in assignments:
-                message.append(f" - {assignment}")
-        await interactions.response.send_message("\n".join(message), ephemeral=True)
-                    
-    else:
-        key_map = {
-            Class.cdir: "CDIR",
-            Class.tech: "Tech Essentials",
-            Class.citw: "Communication in the Workplace",
-            Class.software: "Software Development Fundamentals"
-        }
+    # """if course == Class.all:
+    #    message = []
+    #    for subject, assignments in due_dates.items():
+    #       message.append(f"\n **__{subject}__**")
+    #       for assignment in assignments:
+    #          message.append(f" - {assignment}")
+    #   await interactions.response.send_message("\n".join(message), ephemeral=True)
+               
+    #else: 
+    #key_map = {
+            # Class.cdir: "CDIR",
+            #Class.data: "Data Academy",
+            # Class.citw: "Communication in the Workplace",
+    #}
 
-        subject = key_map[course]
-        tasks = due_dates.get(subject, [])
+    subject = "Data Academy"
+    tasks = due_dates.get(subject, [])
 
-        message = [f"\n**__{subject}__**"]
-        for task in tasks:
-            message.append(f"  - {task}")
-        for update in due_dates["Last Updated"]:
-            message.append(f"\n**__Last Updated:__** \n__{update}__")
+    message = [f"\n**__{subject}__**"]
+    for task in tasks:
+        message.append(f"  - {task}")
+    for update in due_dates["Last Updated"]:
+        message.append(f"\n**__Last Updated:__** \n - __{update}__")
 
-        await interactions.response.send_message("\n".join(message), ephemeral=True)
+    await interactions.response.send_message("\n".join(message), ephemeral=True)
 
 
 
