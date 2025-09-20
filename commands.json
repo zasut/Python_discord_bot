@@ -1,0 +1,26 @@
+{
+    "ping": [
+        "`/ping` Replies with Pong!"
+    ],
+
+    "repeat": [
+        "'/repeat {message}` Repeats the inputed message."
+    ],
+
+    "dice": [
+        "'/dice {sides}` Rolls a dice with the specified number of sides."
+    ],
+
+    "important_date": [
+        "`/important_date {month}` Lists all the important dates in the inputed month."
+    ],
+
+    "data": [
+        "`/data` Shows the Data Acadademy roadmap."
+    ],
+
+    "due": [
+        "`/due` Lists what's due for the week."
+    ]
+
+}
