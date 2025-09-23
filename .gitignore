@@ -1,3 +1,4 @@
 .env
 due_dates.json
 important_dates.json
+command_count.json

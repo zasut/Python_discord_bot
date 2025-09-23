@@ -106,9 +106,9 @@ async def important_date(interactions: discord.Interaction, month: Months):
     dates = month_map[month]
     days = important_dates.get(dates, [])
 
-    datel = [f"\n__{dates}__"]
+    datel = [f"\n# __{dates}__"]
     for date in days:
-        datel.append(f"  - {date}")
+        datel.append(f"{date}")
 
     await interactions.response.send_message("\n".join(datel), ephemeral=True)
 
