@@ -16,6 +16,11 @@ with open("important_dates.json", "r") as file:
 with open ("commands.json", "r") as file:
     commands_info = json.load(file)
 
+with open ("images.json", "r") as file:
+    images = json.load(file)
+
+
+
 load_dotenv()
 
 API_KEY = os.getenv("KEY")
@@ -51,7 +56,7 @@ async def on_ready():
 async def ping(interaction: discord.Interaction):
     """Replies with Pong!!"""
     await interaction.response.send_message(f'Pong! {interaction.user.mention}', ephemeral=True)
-    print("/ping has been used.. It has been used a total of " + str(cm.increment_counter("/PING")) + " times!")
+    print(f"{interaction.user} has used /ping.. It has been used a total of " + str(cm.increment_counter("/PING")) + " times!")
 
 # Simple repeat command
 @client.tree.command()
@@ -61,7 +66,7 @@ async def ping(interaction: discord.Interaction):
 async def repeat(interaction: discord.Interaction, message: str):
     """Repeats inputed message."""
     await interaction.response.send_message(message)
-    print("/repeat has been used.. It has been used a total of " + str(cm.increment_counter("/REPEAT")) + " times!")
+    print(f"{interaction.user} has used /repeat.. It has been used a total of " + str(cm.increment_counter("/REPEAT")) + " times!")
 
 # Simple Dice Roll command
 @client.tree.command()
@@ -77,7 +82,7 @@ async def dice(interaction: discord.Interaction, sides: int):
         await interaction.response.send_message(f'{interaction.user.mention} roles a {sides}-sided dice...')
         roll = random.randint(1, sides)
         await interaction.followup.send(f'{interaction.user} rolled a {roll}')
-    print("/dice has been used.. It has been used a total of " + str(cm.increment_counter("/DICE")) + " times!")
+    print(f"{interaction.user} has used /dice.. It has been used a total of " + str(cm.increment_counter("/DICE")) + " times!")
 
 
 
@@ -115,14 +120,14 @@ async def important_date(interactions: discord.Interaction, month: Months):
         datel.append(f"{date}")
 
     await interactions.response.send_message("\n".join(datel), ephemeral=True)
-    print("/important_date has been used.. It has been used a total of " + str(cm.increment_counter("/IMPORTANT_DATE")) + " times!")
+    print(f"{interactions.user} has used /important_date.. It has been used a total of " + str(cm.increment_counter("/IMPORTANT_DATE")) + " times!")
 
 
 @client.tree.command()
 async def data(interactions: discord.Interaction):
     """Sends an image of the data roadmap."""
-    await interactions.response.send_message(os.getenv("DATA_IMAGE"), ephemeral=True)
-    print("/data has been used.. It has been used a total of " + str(cm.increment_counter("/DATA")) + " times!")
+    await interactions.response.send_message(images.get("DATA_IMAGE"), ephemeral=True)
+    print(f"{interactions.user} has used /data.. It has been used a total of " + str(cm.increment_counter("/DATA")) + " times!")
 
 # Help command
 
@@ -160,7 +165,7 @@ async def help(interactions: discord.Interaction, command: Commands):
         command_info.append(f"  - {command_infos}")
 
     await interactions.response.send_message("\n".join(command_info), ephemeral=True)
-    print("/help has been used.. It has been used a total of " + str(cm.increment_counter("/HELP")) + " times!")  
+    print(f"{interactions.user} has used /help.. It has been used a total of " + str(cm.increment_counter("/HELP")) + " times!")  
 
 
 
@@ -205,7 +210,7 @@ async def due(interactions: discord.Interaction):
         message.append(f"\n**__Last Updated:__** \n - __{update}__")
 
     await interactions.response.send_message("\n".join(message), ephemeral=True)
-    print("/due has been used.. It has been used a total of " + str(cm.increment_counter("/DUE")) + " times!")
+    print(f"{interactions.user} has used /due.. It has been used a total of " + str(cm.increment_counter("/DUE")) + " times!")
 
 
 
