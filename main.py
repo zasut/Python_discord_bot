@@ -49,7 +49,7 @@ async def on_ready():
 # simple command to reply back to the user
 @client.tree.command()
 async def ping(interaction: discord.Interaction):
-    """reply with Pong!!"""
+    """Replies with Pong!!"""
     await interaction.response.send_message(f'Pong! {interaction.user.mention}', ephemeral=True)
     print("/ping has been used.. It has been used a total of " + str(cm.increment_counter("/PING")) + " times!")
 
@@ -59,7 +59,7 @@ async def ping(interaction: discord.Interaction):
     message='The message to repeat',
 )
 async def repeat(interaction: discord.Interaction, message: str):
-    """repeats a message."""
+    """Repeats inputed message."""
     await interaction.response.send_message(message)
     print("/repeat has been used.. It has been used a total of " + str(cm.increment_counter("/REPEAT")) + " times!")
 
@@ -69,7 +69,7 @@ async def repeat(interaction: discord.Interaction, message: str):
     sides="The number of sides on the dice"
 )
 async def dice(interaction: discord.Interaction, sides: int):
-    """rolls a dice."""
+    """Rolls a dice."""
     if sides < 1:
         await interaction.response.send_message("The number of sides must be at least 1.", ephemeral=True)
         return
@@ -96,7 +96,7 @@ class Months(Enum):
     month="The month you want details for"
 )
 async def important_date(interactions: discord.Interaction, month: Months):
-    """Says important information about a month."""
+    """Lists important information for the inputed month."""
     month_map = {
         Months.january: "January",
         Months.july: "July",
@@ -120,7 +120,7 @@ async def important_date(interactions: discord.Interaction, month: Months):
 
 @client.tree.command()
 async def data(interactions: discord.Interaction):
-    """"Sends the data roadmap image."""
+    """Sends an image of the data roadmap."""
     await interactions.response.send_message(os.getenv("DATA_IMAGE"), ephemeral=True)
     print("/data has been used.. It has been used a total of " + str(cm.increment_counter("/DATA")) + " times!")
 
@@ -140,7 +140,7 @@ class Commands(Enum):
     command='the command you need help with'
 )
 async def help(interactions: discord.Interaction, command: Commands):
-    """provides information on the selected command."""
+    """Provides information on the inputed command."""
 
 
     commands_map = {
@@ -176,7 +176,7 @@ async def help(interactions: discord.Interaction, command: Commands):
 #        course="The class you want to check"
 # )
 async def due(interactions: discord.Interaction):
-    """Says what's due for the current week."""
+    """Lists what's due."""
 
     # """if course == Class.all:
     #    message = []
