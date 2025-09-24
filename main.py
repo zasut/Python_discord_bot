@@ -5,6 +5,7 @@ from discord import app_commands
 from enum import Enum
 import json
 import random
+import counter_manager as cm
 
 with open("due_dates.json", "r") as file:
     due_dates = json.load(file)
@@ -192,6 +193,8 @@ async def due(interactions: discord.Interaction):
     message = [f"\n**__{subject}__**"]
     for task in tasks:
         message.append(f"  - {task}")
+    for reminder_message in due_dates["Reminders"]:
+        message.append(f"\n **__Reminder__:** \n - {reminder_message}")
     for update in due_dates["Last Updated"]:
         message.append(f"\n**__Last Updated:__** \n - __{update}__")
 
