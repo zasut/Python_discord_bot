@@ -61,7 +61,7 @@ async def ping(interaction: discord.Interaction):
 # Simple repeat command
 @client.tree.command()
 @app_commands.describe(
-    message='The message to repeat',
+    message = 'The message to repeat',
 )
 async def repeat(interaction: discord.Interaction, message: str):
     """Repeats inputed message."""
@@ -71,7 +71,7 @@ async def repeat(interaction: discord.Interaction, message: str):
 # Simple Dice Roll command
 @client.tree.command()
 @app_commands.describe(
-    sides="The number of sides on the dice"
+    sides = "The number of sides on the dice"
 )
 async def dice(interaction: discord.Interaction, sides: int):
     """Rolls a dice."""
@@ -98,7 +98,7 @@ class Months(Enum):
 # Important_dates command
 @client.tree.command()
 @app_commands.describe(
-    month="The month you want details for"
+    month = "The month you want details for"
 )
 async def important_date(interactions: discord.Interaction, month: Months):
     """Lists important information for the inputed month."""
@@ -122,6 +122,8 @@ async def important_date(interactions: discord.Interaction, month: Months):
     await interactions.response.send_message("\n".join(datel), ephemeral=True)
     print(f"{interactions.user} has used /important_date.. It has been used a total of " + str(cm.increment_counter("/IMPORTANT_DATE")) + " times!")
 
+# Will be revamped with the next change
+# Data roadmap command
 
 @client.tree.command()
 async def data(interactions: discord.Interaction):
@@ -142,7 +144,7 @@ class Commands(Enum):
 
 @client.tree.command()
 @app_commands.describe(
-    command='the command you need help with'
+    command = 'the command you need help with'
 )
 async def help(interactions: discord.Interaction, command: Commands):
     """Provides information on the inputed command."""
@@ -169,45 +171,50 @@ async def help(interactions: discord.Interaction, command: Commands):
 
 
 
-# class Class(Enum):
-    # all = "all"
-    # cdir = "CDIR"
-    # data = "Data Academy"
-    # citw = "Communications in the Workplace"
+class Class(Enum):
+    all = "all"
+    excel = "Excel"
+    cdir = "CDIR"
+    citw = "Communications in the Workplace"
+    plural = "Pluralsight"
 
-# Due command
+# Due command 
+# Gathers the information from the due_dates.json
+
 @client.tree.command()
-# @app_commands.describe(
-#        course="The class you want to check"
-# )
-async def due(interactions: discord.Interaction):
-    """Lists what's due."""
+@app_commands.describe(
+       course = "The class you want to check"
+)
+async def due(interactions: discord.Interaction, course: Class):
+    """Lists what's due for selected class"""
 
-    # """if course == Class.all:
-    #    message = []
-    #    for subject, assignments in due_dates.items():
-    #       message.append(f"\n **__{subject}__**")
-    #       for assignment in assignments:
-    #          message.append(f" - {assignment}")
-    #   await interactions.response.send_message("\n".join(message), ephemeral=True)
+    # configured to the top requires review
+    key_map = {
+            Class.excel: "Excel",
+            Class.cdir: "CDIR",
+            Class.plural: "Pluralsight",
+            Class.citw: "Communication in the Workplace",
+            Class.all: "all"
+    }
+    if course == Class.all:
+        message = []
+        for subject, assignments in due_dates.items():
+           message.append(f"\n **__{subject}__**")
+           for assignment in assignments:
+              message.append(f" - {assignment}")
                
-    #else: 
-    #key_map = {
-            # Class.cdir: "CDIR",
-            #Class.data: "Data Academy",
-            # Class.citw: "Communication in the Workplace",
-    #}
+    else: 
+        subject = key_map[course]
+        tasks = due_dates.get(subject, [])
 
-    subject = "Data Academy"
-    tasks = due_dates.get(subject, [])
-
-    message = [f"\n**__{subject}__**"]
-    for task in tasks:
-        message.append(f"  - {task}")
-    for reminder_message in due_dates["Reminders"]:
-        message.append(f"\n **__Reminder__:** \n - {reminder_message}")
-    for update in due_dates["Last Updated"]:
-        message.append(f"\n**__Last Updated:__** \n - __{update}__")
+        message = [f"\n**__{subject}__**"]
+        for task in tasks:
+            message.append(f"{task}")
+        message.append(f"\n**__Reminders:__**")
+        for reminder_message in due_dates["Reminders"]:
+            message.append(f" - {reminder_message}")
+        for update in due_dates["Last Updated"]:
+         message.append(f"\n**__Last Updated:__** \n - __{update}__")
 
     await interactions.response.send_message("\n".join(message), ephemeral=True)
     print(f"{interactions.user} has used /due.. It has been used a total of " + str(cm.increment_counter("/DUE")) + " times!")
